@@ -10,7 +10,7 @@
   --accent: #f59e0b;
   --accent2: #3b82f6;
   --text: #e8eaf0;
-  --text2: #8b92a5;
+  --text2: #a1a1aa;
 }
 
 * { box-sizing: border-box; }
@@ -18,7 +18,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   margin: 0;
 }
 

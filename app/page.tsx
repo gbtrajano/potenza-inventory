@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Dashboard from "@/components/Dashboard";
+import Dashboard, { InventoryQuickFilter } from "@/components/Dashboard";
 import InventoryList from "@/components/InventoryList";
 import ItemForm from "@/components/ItemForm";
 import TransferModal from "@/components/TransferModal";
@@ -27,6 +27,7 @@ export default function Home() {
   const [editItem, setEditItem] = useState<InventoryItem | null>(null);
   const [transferItem, setTransferItem] = useState<InventoryItem | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [inventoryQuickFilter, setInventoryQuickFilter] = useState<InventoryQuickFilter | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const refresh = useCallback(() => setRefreshKey(k => k + 1), []);
@@ -77,9 +78,10 @@ export default function Home() {
   function handleEdit(item: InventoryItem) { setEditItem(item); setPage("add"); }
   function handleTransfer(item: InventoryItem) { setTransferItem(item); }
   function handleFormDone() { setEditItem(null); setPage("inventory"); refresh(); }
-  function handleNav(p: Page) {
+  function handleNav(p: Page, quickFilter?: InventoryQuickFilter) {
     if (p !== "add") setEditItem(null);
     setPage(p);
+    setInventoryQuickFilter(p === "inventory" ? (quickFilter ?? null) : null);
     setUserMenuOpen(false);
   }
 
@@ -214,10 +216,16 @@ export default function Home() {
 
         {/* Content */}
         <main style={{ flex: 1, overflow: "auto", padding: 24 }}>
-          {page === "dashboard" && <Dashboard key={refreshKey} onNavigate={handleNav} />}
+          {page === "dashboard" && (
+            <Dashboard
+              key={refreshKey}
+              onNavigate={(p, filter) => handleNav(p, filter)}
+            />
+          )}
           {page === "inventory" && (
             <InventoryList
-              key={refreshKey}
+              key={`${refreshKey}-${inventoryQuickFilter ?? "all"}`}
+              initialQuickFilter={inventoryQuickFilter}
               onEdit={canEdit ? handleEdit : () => {}}
               onTransfer={canEdit ? handleTransfer : () => {}}
               onRefresh={refresh}

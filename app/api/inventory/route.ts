@@ -21,10 +21,14 @@ export async function GET(req: NextRequest) {
   const tipo = searchParams.get('tipo');
   const departamento = searchParams.get('departamento');
   const search = searchParams.get('search');
+  const semUsuario = searchParams.get('semUsuario') === 'true';
+  const semPatrimonio = searchParams.get('semPatrimonio') === 'true';
 
   if (loja) items = items.filter(i => i.loja === loja);
   if (tipo) items = items.filter(i => i.tipo === tipo);
   if (departamento) items = items.filter(i => i.departamento === departamento);
+  if (semUsuario) items = items.filter(i => ['NOTEBOOK', 'DESKTOP', 'TABLET'].includes(i.tipo) && !i.usuario);
+  if (semPatrimonio) items = items.filter(i => !i.patrimonio || i.patrimonio === '-');
   if (search) {
     const s = search.toLowerCase();
     items = items.filter(i =>

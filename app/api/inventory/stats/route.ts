@@ -23,7 +23,31 @@ export async function GET() {
   const semUsuario = items.filter(i => ['NOTEBOOK', 'DESKTOP', 'TABLET'].includes(i.tipo) && !i.usuario).length;
 
   // Items with no patrimonio
-  const semPatrimonio = items.filter(i => !i.patrimonio).length;
+  const semPatrimonio = items.filter(i => !i.patrimonio || i.patrimonio === '-').length;
+
+  // Regularizados (Items with user and patrimonio)
+  const regularizados = items.filter(i => 
+    (!['NOTEBOOK', 'DESKTOP', 'TABLET'].includes(i.tipo) || (i.usuario && i.usuario !== '-')) && 
+    (i.patrimonio && i.patrimonio !== '-')
+  ).length;
+
+  // Critical Alerts
+  const alerts: { message: string; severity: 'critical' | 'warning' | 'info' }[] = [];
+  
+  // Find store with most pending patrimonios
+  const byLojaPendencias: Record<string, number> = {};
+  items.filter(i => !i.patrimonio || i.patrimonio === '-').forEach(i => {
+    byLojaPendencias[i.loja] = (byLojaPendencias[i.loja] || 0) + 1;
+  });
+  const worstLoja = Object.entries(byLojaPendencias).sort((a, b) => b[1] - a[1])[0];
+  
+  if (worstLoja && worstLoja[1] > 5) {
+    alerts.push({ message: `${worstLoja[0]} possui a maior divergência (${worstLoja[1]} itens sem patrimônio)`, severity: 'critical' });
+  }
+  
+  if (semUsuario > 0) {
+    alerts.push({ message: `${semUsuario} equipamentos ociosos (sem usuário atribuído)`, severity: 'warning' });
+  }
 
   // Recent history (last 20)
   const recentHistory = [...db.history]
@@ -41,6 +65,8 @@ export async function GET() {
     byDepartamento,
     semUsuario,
     semPatrimonio,
+    regularizados,
+    alerts,
     recentItems,
     recentHistory,
     totalHistory: db.history.length,

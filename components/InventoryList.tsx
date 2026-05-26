@@ -9,11 +9,19 @@ const TIPO_COLOR: Record<string, string> = {
   NOBREAK: "#84cc16", ROTEADOR: "#f97316", DVR: "#a78bfa",
 };
 
-export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit = true }: {
+type QuickFilter = "semUsuario" | "semPatrimonio";
+
+const QUICK_FILTER_LABEL: Record<QuickFilter, string> = {
+  semUsuario: "Sem usuário (Notebooks/Desktops/Tablets)",
+  semPatrimonio: "Sem patrimônio",
+};
+
+export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit = true, initialQuickFilter = null }: {
   onEdit: (item: InventoryItem) => void;
   onTransfer: (item: InventoryItem) => void;
   onRefresh: () => void;
   canEdit?: boolean;
+  initialQuickFilter?: QuickFilter | null;
 }) {
   const [allItems, setAllItems] = useState<InventoryItem[]>([]);
   const [items, setItems] = useState<InventoryItem[]>([]);
@@ -25,7 +33,8 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
   const [filterTipo, setFilterTipo] = useState("");
   const [filterDep, setFilterDep] = useState("");
   const [filterModelo, setFilterModelo] = useState("");
-  const [showFilters, setShowFilters] = useState(false);
+  const [quickFilter, setQuickFilter] = useState<QuickFilter | "">(initialQuickFilter || "");
+  const [showFilters, setShowFilters] = useState(!!initialQuickFilter);
   const [delConfirm, setDelConfirm] = useState<string | null>(null);
   const [metaLojas, setMetaLojas] = useState<string[]>([]);
   const [metaTipos, setMetaTipos] = useState<string[]>([]);
@@ -58,6 +67,8 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
     if (filterLoja) params.set("loja", filterLoja);
     if (filterTipo) params.set("tipo", filterTipo);
     if (filterDep) params.set("departamento", filterDep);
+    if (quickFilter === "semUsuario") params.set("semUsuario", "true");
+    if (quickFilter === "semPatrimonio") params.set("semPatrimonio", "true");
     const res = await fetch(`/api/inventory?${params}`);
     const data = await res.json();
 
@@ -76,13 +87,13 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
 
     // Refresh distinct filter values to reflect any data changes
     loadMeta();
-  }, [search, filterLoja, filterTipo, filterDep, filterModelo, page, loadMeta]);
+  }, [search, filterLoja, filterTipo, filterDep, filterModelo, quickFilter, page, loadMeta]);
 
   useEffect(() => { load(); }, [load]);
   useEffect(() => { loadMeta(); }, [loadMeta]);
 
   // Reset page on filter change
-  useEffect(() => { setPage(1); }, [search, filterLoja, filterTipo, filterDep, filterModelo]);
+  useEffect(() => { setPage(1); }, [search, filterLoja, filterTipo, filterDep, filterModelo, quickFilter]);
 
   // Reset modelo when tipo changes
   useEffect(() => { setFilterModelo(""); }, [filterTipo]);
@@ -95,11 +106,11 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
   }
 
   const pages = Math.ceil(total / PER_PAGE);
-  const activeFilterCount = [filterLoja, filterTipo, filterDep, filterModelo, search].filter(Boolean).length;
+  const activeFilterCount = [filterLoja, filterTipo, filterDep, filterModelo, search, quickFilter].filter(Boolean).length;
   const hasFilters = activeFilterCount > 0;
 
   function clearFilters() {
-    setFilterLoja(""); setFilterTipo(""); setFilterDep(""); setFilterModelo(""); setSearch(""); setPage(1);
+    setFilterLoja(""); setFilterTipo(""); setFilterDep(""); setFilterModelo(""); setSearch(""); setQuickFilter(""); setPage(1);
   }
 
   return (
@@ -155,6 +166,27 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
             </span>
           </div>
         </div>
+
+        {quickFilter && (
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8, marginTop: 12,
+            padding: "8px 12px", borderRadius: 8,
+            background: quickFilter === "semUsuario" ? "rgba(239,68,68,0.1)" : "rgba(245,158,11,0.1)",
+            border: `1px solid ${quickFilter === "semUsuario" ? "rgba(239,68,68,0.35)" : "rgba(245,158,11,0.35)"}`,
+            fontSize: 12,
+          }}>
+            <span style={{ color: quickFilter === "semUsuario" ? "#f87171" : "#fbbf24", fontWeight: 600 }}>
+              {QUICK_FILTER_LABEL[quickFilter]}
+            </span>
+            <button
+              onClick={() => setQuickFilter("")}
+              style={{ marginLeft: "auto", background: "none", border: "none", color: "var(--text2)", cursor: "pointer", display: "flex", padding: 2 }}
+              title="Remover filtro"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
 
         {showFilters && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10, marginTop: 14 }}>
