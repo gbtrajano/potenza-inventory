@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { readUsers, writeUsers, hashPassword, generateId, User } from '@/lib/users';
 
 async function requireAdmin() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const role = (session?.user as any)?.role;
   if (!session || role !== 'admin') return null;
   return session;

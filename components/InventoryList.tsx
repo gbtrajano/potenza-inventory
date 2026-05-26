@@ -2,7 +2,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Search, Edit2, ArrowRightLeft, Trash2, ChevronLeft, ChevronRight, Filter, X, Package } from "lucide-react";
 import { InventoryItem } from "@/lib/db";
-import { LOJAS, TIPOS, DEPARTAMENTOS } from "@/lib/constants";
 
 const TIPO_COLOR: Record<string, string> = {
   NOTEBOOK: "#3b82f6", IMPRESSORA: "#10b981", DESKTOP: "#8b5cf6",
@@ -28,6 +27,9 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
   const [filterModelo, setFilterModelo] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [delConfirm, setDelConfirm] = useState<string | null>(null);
+  const [metaLojas, setMetaLojas] = useState<string[]>([]);
+  const [metaTipos, setMetaTipos] = useState<string[]>([]);
+  const [metaDeps, setMetaDeps] = useState<string[]>([]);
   const PER_PAGE = 20;
 
   // Derive available models from allItems filtered by tipo (if tipo selected)
@@ -39,6 +41,15 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
         .filter(Boolean)
     )
   ).sort();
+
+  // Load distinct filter values from real database data
+  const loadMeta = useCallback(async () => {
+    const res = await fetch("/api/inventory?meta=true");
+    const data = await res.json();
+    setMetaLojas(data.lojas || []);
+    setMetaTipos(data.tipos || []);
+    setMetaDeps(data.departamentos || []);
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -62,9 +73,13 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
     const start = (page - 1) * PER_PAGE;
     setItems(filtered.slice(start, start + PER_PAGE));
     setLoading(false);
-  }, [search, filterLoja, filterTipo, filterDep, filterModelo, page]);
+
+    // Refresh distinct filter values to reflect any data changes
+    loadMeta();
+  }, [search, filterLoja, filterTipo, filterDep, filterModelo, page, loadMeta]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { loadMeta(); }, [loadMeta]);
 
   // Reset page on filter change
   useEffect(() => { setPage(1); }, [search, filterLoja, filterTipo, filterDep, filterModelo]);
@@ -147,14 +162,14 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
               <div style={{ fontSize: 11, color: "var(--text2)", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Loja</div>
               <select className="input-field" value={filterLoja} onChange={e => setFilterLoja(e.target.value)}>
                 <option value="">Todas</option>
-                {LOJAS.map(l => <option key={l}>{l}</option>)}
+                {metaLojas.map(l => <option key={l}>{l}</option>)}
               </select>
             </div>
             <div>
               <div style={{ fontSize: 11, color: "var(--text2)", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Tipo</div>
               <select className="input-field" value={filterTipo} onChange={e => setFilterTipo(e.target.value)}>
                 <option value="">Todos</option>
-                {TIPOS.map(t => <option key={t}>{t}</option>)}
+                {metaTipos.map(t => <option key={t}>{t}</option>)}
               </select>
             </div>
             <div>
@@ -175,7 +190,7 @@ export default function InventoryList({ onEdit, onTransfer, onRefresh, canEdit =
               <div style={{ fontSize: 11, color: "var(--text2)", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Departamento</div>
               <select className="input-field" value={filterDep} onChange={e => setFilterDep(e.target.value)}>
                 <option value="">Todos</option>
-                {DEPARTAMENTOS.map(d => <option key={d}>{d}</option>)}
+                {metaDeps.map(d => <option key={d}>{d}</option>)}
               </select>
             </div>
           </div>

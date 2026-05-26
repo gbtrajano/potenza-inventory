@@ -4,6 +4,17 @@ import { readDB, writeDB, generateId, now, InventoryItem } from '@/lib/db';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const db = readDB();
+
+  // Return distinct filter values from actual data
+  if (searchParams.get('meta') === 'true') {
+    const unique = <T>(arr: T[]) => Array.from(new Set(arr)).filter(Boolean).sort() as T[];
+    return NextResponse.json({
+      lojas: unique(db.items.map(i => i.loja)),
+      tipos: unique(db.items.map(i => i.tipo)),
+      departamentos: unique(db.items.map(i => i.departamento)),
+    });
+  }
+
   let items = db.items;
 
   const loja = searchParams.get('loja');

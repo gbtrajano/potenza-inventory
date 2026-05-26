@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Save, X, ChevronDown } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { InventoryItem } from "@/lib/db";
-import { LOJAS, TIPOS, DEPARTAMENTOS } from "@/lib/constants";
 
 // Fields shown per tipo
 const TIPO_FIELD_CONFIG: Record<string, {
@@ -63,6 +62,19 @@ export default function ItemForm({ item, onDone, onCancel }: {
   const [form, setForm] = useState<FormData>(item ? { ...item } : { ...EMPTY });
   const [loading, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [metaLojas, setMetaLojas] = useState<string[]>([]);
+  const [metaTipos, setMetaTipos] = useState<string[]>([]);
+  const [metaDeps, setMetaDeps] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/inventory?meta=true")
+      .then(r => r.json())
+      .then(d => {
+        setMetaLojas(d.lojas || []);
+        setMetaTipos(d.tipos || []);
+        setMetaDeps(d.departamentos || []);
+      });
+  }, []);
 
   const config = TIPO_FIELD_CONFIG[form.tipo] || TIPO_FIELD_CONFIG.DEFAULT;
   const showFields = form.tipo ? config.show : ["loja", "tipo"];
@@ -102,7 +114,7 @@ export default function ItemForm({ item, onDone, onCancel }: {
         <label style={{ fontSize: 11, color: "var(--text2)", textTransform: "uppercase", letterSpacing: 0.5 }}>{label} *</label>
         <select className="input-field" style={{ marginTop: 4, borderColor: err ? "#ef4444" : "" }} value={value} onChange={e => set(field, e.target.value)}>
           <option value="">Selecione...</option>
-          {LOJAS.map(l => <option key={l}>{l}</option>)}
+          {metaLojas.map(l => <option key={l}>{l}</option>)}
         </select>
         {err && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 2 }}>{err}</div>}
       </div>
@@ -113,7 +125,7 @@ export default function ItemForm({ item, onDone, onCancel }: {
         <label style={{ fontSize: 11, color: "var(--text2)", textTransform: "uppercase", letterSpacing: 0.5 }}>{label} *</label>
         <select className="input-field" style={{ marginTop: 4, borderColor: err ? "#ef4444" : "" }} value={value} onChange={e => set(field, e.target.value)}>
           <option value="">Selecione...</option>
-          {TIPOS.map(t => <option key={t}>{t}</option>)}
+          {metaTipos.map(t => <option key={t}>{t}</option>)}
         </select>
         {err && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 2 }}>{err}</div>}
       </div>
@@ -124,7 +136,7 @@ export default function ItemForm({ item, onDone, onCancel }: {
         <label style={{ fontSize: 11, color: "var(--text2)", textTransform: "uppercase", letterSpacing: 0.5 }}>{label}</label>
         <select className="input-field" style={{ marginTop: 4 }} value={value} onChange={e => set(field, e.target.value)}>
           <option value="">Selecione...</option>
-          {DEPARTAMENTOS.map(d => <option key={d}>{d}</option>)}
+          {metaDeps.map(d => <option key={d}>{d}</option>)}
         </select>
       </div>
     );
