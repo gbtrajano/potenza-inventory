@@ -125,7 +125,41 @@ export default function ImportExport({ onDone }: { onDone: () => void }) {
     if (fileRef.current) fileRef.current.value = "";
   }
 
-  function exportCSV() { window.open("/api/import-export?format=csv"); }
+  async function exportXLSX() {
+    const res = await fetch("/api/import-export?format=json");
+    const data: any[] = await res.json();
+
+    const headers = [
+      "LOJA","TIPO","DEPARTAMENTO","LOCALIZAÇÃO","MODELO","Nº DE SÉRIE",
+      "IP","USUÁRIO","PIN","CARGO","RAMAL","PATRIMÔNIO ANTIGO","PATRIMÔNIO",
+      "PATRIMÔNIO VINCULADO","OBS."
+    ];
+    const fieldMap: Record<string, string> = {
+      "LOJA": "loja","TIPO": "tipo","DEPARTAMENTO": "departamento",
+      "LOCALIZAÇÃO": "localizacao","MODELO": "modelo","Nº DE SÉRIE": "numero_serie",
+      "IP": "ip","USUÁRIO": "usuario","PIN": "pin","CARGO": "cargo","RAMAL": "ramal",
+      "PATRIMÔNIO ANTIGO": "patrimonio_antigo","PATRIMÔNIO": "patrimonio",
+      "PATRIMÔNIO VINCULADO": "patrimonio_vinculado","OBS.": "observacao",
+    };
+
+    const rows = data.map(item =>
+      headers.reduce((obj, h) => ({ ...obj, [h]: item[fieldMap[h]] || "" }), {} as Record<string, string>)
+    );
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
+
+    // Column widths
+    ws["!cols"] = [
+      {wch:18},{wch:20},{wch:20},{wch:24},{wch:26},{wch:20},
+      {wch:14},{wch:22},{wch:10},{wch:26},{wch:8},{wch:16},{wch:14},{wch:16},{wch:32}
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Inventário");
+    const date = new Date().toISOString().slice(0,10);
+    XLSX.writeFile(wb, `inventario_potenza_${date}.xlsx`);
+  }
+
   function exportJSON() { window.open("/api/import-export?format=json"); }
 
   const previewCols = preview && preview[0] ? Object.keys(preview[0]).slice(0, 8) : [];
@@ -138,7 +172,7 @@ export default function ImportExport({ onDone }: { onDone: () => void }) {
         <h3 style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 700 }}>Exportar Inventário</h3>
         <p style={{ margin: "0 0 16px", fontSize: 12, color: "var(--text2)" }}>Baixe todos os itens do inventário no formato desejado.</p>
         <div style={{ display: "flex", gap: 12 }}>
-          <button className="btn-primary" onClick={exportCSV}><Download size={14} /> Exportar CSV</button>
+          <button className="btn-primary" onClick={exportXLSX}><Download size={14} /> Exportar XLSX</button>
           <button className="btn-secondary" onClick={exportJSON}><Download size={14} /> Exportar JSON</button>
         </div>
       </div>
