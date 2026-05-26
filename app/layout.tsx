@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Potenza TI — Inventário",
+  title: "Inventário T.I",
   description: "Sistema de Gerenciamento de Inventário de TI",
 };
 
