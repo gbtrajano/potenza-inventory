@@ -307,7 +307,7 @@
       "departamento": "ADMINISTRATIVO",
       "localizacao": "SALA DA ADMINISTRAÇÃO",
       "modelo": "HP LASERJET PRO 4103FDW",
-      "numero_serie": "",
+      "numero_serie": "BRBST5H03T",
       "ip": "192.168.1.40",
       "usuario": "-",
       "pin": "80976712",
@@ -318,7 +318,7 @@
       "patrimonio_vinculado": "",
       "observacao": "TERCEIRIZADA",
       "created_at": "2026-05-26T15:54:40.078Z",
-      "updated_at": "2026-05-26T15:54:40.078Z"
+      "updated_at": "2026-06-01T13:39:31.221Z"
     },
     {
       "id": "mpmtg09ayhyct",
@@ -328,7 +328,7 @@
       "localizacao": "ESTOQUE DE PEÇAS",
       "modelo": "HP LASERJET PRO 4103FDW",
       "numero_serie": "",
-      "ip": "8",
+      "ip": "192.168.1.119",
       "usuario": "-",
       "pin": "80955195",
       "cargo": "-",
@@ -338,7 +338,7 @@
       "patrimonio_vinculado": "",
       "observacao": "TERCEIRIZADA",
       "created_at": "2026-05-26T15:54:40.078Z",
-      "updated_at": "2026-05-26T15:54:40.078Z"
+      "updated_at": "2026-05-28T17:50:15.755Z"
     },
     {
       "id": "mpmtg09ar38d8",
@@ -788,7 +788,7 @@
       "localizacao": "SHOWROOM",
       "modelo": "HP LASERJET PRO 4103FDW",
       "numero_serie": "",
-      "ip": "192.168.5.108",
+      "ip": "192.168.5.148",
       "usuario": "-",
       "pin": "70797017",
       "cargo": "-",
@@ -798,7 +798,7 @@
       "patrimonio_vinculado": "",
       "observacao": "TERCEIRIZADA",
       "created_at": "2026-05-26T15:54:40.079Z",
-      "updated_at": "2026-05-26T15:54:40.079Z"
+      "updated_at": "2026-06-03T13:03:55.399Z"
     },
     {
       "id": "mpmtg09beg4qi",
@@ -10107,18 +10107,18 @@
       "departamento": "ESTOQUE TI",
       "localizacao": "ESTOQUE",
       "modelo": "HP G9",
-      "numero_serie": "",
+      "numero_serie": "BRM551RLZH",
       "ip": "",
-      "usuario": "",
+      "usuario": "BRUNO ALCANTARA",
       "pin": "",
       "cargo": "",
       "ramal": "",
       "patrimonio_antigo": "",
-      "patrimonio": "",
+      "patrimonio": "POTENZA-2185",
       "patrimonio_vinculado": "",
       "observacao": "",
       "created_at": "2026-05-26T15:54:40.093Z",
-      "updated_at": "2026-05-26T15:54:40.093Z"
+      "updated_at": "2026-06-01T12:44:19.120Z"
     },
     {
       "id": "mpmtg09p7ouo4",
@@ -10167,7 +10167,7 @@
       "departamento": "ESTOQUE TI",
       "localizacao": "ESTOQUE",
       "modelo": "HP G9",
-      "numero_serie": "",
+      "numero_serie": "BRM546QYY0",
       "ip": "",
       "usuario": "",
       "pin": "",
@@ -10178,7 +10178,7 @@
       "patrimonio_vinculado": "",
       "observacao": "NOTEBOOK NOVO / SEM USUÁRIO",
       "created_at": "2026-05-26T15:54:40.094Z",
-      "updated_at": "2026-05-26T15:54:40.094Z"
+      "updated_at": "2026-05-26T19:47:28.801Z"
     },
     {
       "id": "mpmtg09qyg4bw",
@@ -10187,7 +10187,7 @@
       "departamento": "ESTOQUE TI",
       "localizacao": "ESTOQUE",
       "modelo": "HP G9",
-      "numero_serie": "",
+      "numero_serie": "BRM545QW97",
       "ip": "",
       "usuario": "",
       "pin": "",
@@ -10198,7 +10198,7 @@
       "patrimonio_vinculado": "",
       "observacao": "NOTEBOOK NOVO / SEM USUÁRIO",
       "created_at": "2026-05-26T15:54:40.094Z",
-      "updated_at": "2026-05-26T15:54:40.094Z"
+      "updated_at": "2026-05-26T19:46:50.998Z"
     },
     {
       "id": "mpmtg09qkxc1s",
@@ -11069,7 +11069,7 @@
       "modelo": "SAMSUNG 550XDA",
       "numero_serie": "",
       "ip": "-",
-      "usuario": "NEWTON COSTA",
+      "usuario": "VAGO ( BACKUP NEWTON )",
       "pin": "-",
       "cargo": "GERENTE GERAL DE PEÇAS",
       "ramal": "-",
@@ -11078,7 +11078,7 @@
       "patrimonio_vinculado": "",
       "observacao": "-",
       "created_at": "2026-05-26T15:54:40.095Z",
-      "updated_at": "2026-05-26T15:54:40.095Z"
+      "updated_at": "2026-06-01T12:42:42.061Z"
     },
     {
       "id": "mpmtg09rnehc7",
@@ -12206,8 +12206,8 @@
       "tipo": "TELEFONE",
       "departamento": "VEÍCULOS NOVOS",
       "localizacao": "SHOWROOM",
-      "modelo": "?",
-      "numero_serie": "",
+      "modelo": "INTELBRAS TIP 125I",
+      "numero_serie": "MEA126000283HG",
       "ip": "?",
       "usuario": "MARCOS LOPES",
       "pin": "-",
@@ -12218,7 +12218,7 @@
       "patrimonio_vinculado": "",
       "observacao": "-",
       "created_at": "2026-05-26T15:54:40.097Z",
-      "updated_at": "2026-05-26T15:54:40.097Z"
+      "updated_at": "2026-06-01T15:01:15.199Z"
     },
     {
       "id": "mpmtg09tv5if0",
@@ -24807,18 +24807,18 @@
       "departamento": "GERENTE DE PEÇAS",
       "localizacao": "GERÊNCIA",
       "modelo": "HP G9",
-      "numero_serie": "",
+      "numero_serie": "BRM551RLZF",
       "ip": "",
-      "usuario": "NEWTON",
+      "usuario": "NEWTON COSTA",
       "pin": "",
       "cargo": "GERENTE DE PEÇAS",
       "ramal": "-",
       "patrimonio_antigo": "",
-      "patrimonio": "",
+      "patrimonio": "POTENZA-2188",
       "patrimonio_vinculado": "",
       "observacao": "",
       "created_at": "2026-05-26T15:54:40.119Z",
-      "updated_at": "2026-05-26T15:54:40.119Z"
+      "updated_at": "2026-06-01T12:42:15.070Z"
     },
     {
       "id": "mpmtg0af6zgsr",
@@ -25210,6 +25210,178 @@
       "usuario_operacao": "Importação CSV",
       "timestamp": "2026-05-26T15:54:40.119Z",
       "observacao": "Importados 1260 itens via CSV (modo: append)"
+    },
+    {
+      "id": "mpn1qlfaad59d",
+      "item_id": "mpmtg09qyg4bw",
+      "action": "update",
+      "changes": {
+        "numero_serie": {
+          "from": "",
+          "to": "BRM545QW97"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-05-26T19:46:50.998Z"
+    },
+    {
+      "id": "mpn1reld8x2vc",
+      "item_id": "mpmtg09qa9uhu",
+      "action": "update",
+      "changes": {
+        "numero_serie": {
+          "from": "",
+          "to": "BRM546QYY0"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-05-26T19:47:28.801Z"
+    },
+    {
+      "id": "mppsgd6zcvxwi",
+      "item_id": "mpmtg09ayhyct",
+      "action": "update",
+      "changes": {
+        "ip": {
+          "from": "8",
+          "to": "192.168.1.119"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-05-28T17:50:15.755Z"
+    },
+    {
+      "id": "mprexsliarvit",
+      "item_id": "mpmtg0afyzu3v",
+      "action": "update",
+      "changes": {
+        "patrimonio": {
+          "from": "",
+          "to": "POTENZA-2188"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-05-29T21:07:26.598Z"
+    },
+    {
+      "id": "mpsfyj29udkhl",
+      "item_id": "mpmtg09t4gumu",
+      "action": "update",
+      "changes": {
+        "modelo": {
+          "from": "?",
+          "to": "Intelbras TIP 125i"
+        },
+        "numero_serie": {
+          "from": "",
+          "to": "MEA126000283HG"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-05-30T14:23:46.689Z"
+    },
+    {
+      "id": "mpv77o2mo01jn",
+      "item_id": "mpmtg0afyzu3v",
+      "action": "update",
+      "changes": {
+        "numero_serie": {
+          "from": "",
+          "to": "BRM551RLZF"
+        },
+        "usuario": {
+          "from": "NEWTON",
+          "to": "NEWTON COSTA"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T12:42:15.070Z"
+    },
+    {
+      "id": "mpv788wdnuaic",
+      "item_id": "mpmtg09rpsnk7",
+      "action": "update",
+      "changes": {
+        "usuario": {
+          "from": "NEWTON COSTA",
+          "to": "VAGO ( BACKUP NEWTON )"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T12:42:42.061Z"
+    },
+    {
+      "id": "mpv79wskfd109",
+      "item_id": "mpmtg09pu3yw1",
+      "action": "update",
+      "changes": {
+        "numero_serie": {
+          "from": "",
+          "to": "BRM551RLZH"
+        },
+        "usuario": {
+          "from": "",
+          "to": "Bruno Ribeiro Alcantara"
+        },
+        "patrimonio": {
+          "from": "",
+          "to": "POTENZA-2185"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T12:43:59.684Z"
+    },
+    {
+      "id": "mpv7absg1ytk2",
+      "item_id": "mpmtg09pu3yw1",
+      "action": "update",
+      "changes": {
+        "usuario": {
+          "from": "Bruno Ribeiro Alcantara",
+          "to": "BRUNO ALCANTARA"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T12:44:19.120Z"
+    },
+    {
+      "id": "mpv99bf94e6ai",
+      "item_id": "mpmtg09apvwd3",
+      "action": "update",
+      "changes": {
+        "numero_serie": {
+          "from": "",
+          "to": "BRBST5H03T"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T13:39:31.221Z"
+    },
+    {
+      "id": "mpvc6fcvrnauf",
+      "item_id": "mpmtg09t4gumu",
+      "action": "update",
+      "changes": {
+        "modelo": {
+          "from": "Intelbras TIP 125i",
+          "to": "INTELBRAS TIP 125I"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-01T15:01:15.199Z"
+    },
+    {
+      "id": "mpy2v8qv0tt9y",
+      "item_id": "mpmtg09bvj6ey",
+      "action": "update",
+      "changes": {
+        "ip": {
+          "from": "192.168.5.108",
+          "to": "192.168.5.148"
+        }
+      },
+      "usuario_operacao": "Sistema",
+      "timestamp": "2026-06-03T13:03:55.399Z"
     }
   ],
   "schema_version": 1

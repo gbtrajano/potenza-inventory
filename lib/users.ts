@@ -9,7 +9,7 @@ export interface User {
   username: string;
   name: string;
   password_hash: string;
-  role: 'admin' | 'editor' | 'viewer';
+  role: 'admin' | 'editor' | 'viewer' | 'purchaser';
   active: boolean;
   created_at: string;
   last_login?: string;
@@ -74,12 +74,14 @@ export const ROLE_LABELS: Record<string, string> = {
   admin: 'Administrador',
   editor: 'Editor',
   viewer: 'Visualizador',
+  purchaser: 'Comprador',
 };
 
 export const ROLE_COLORS: Record<string, string> = {
   admin: '#f59e0b',
   editor: '#3b82f6',
   viewer: '#6b7280',
+  purchaser: '#10b981',
 };
 
 // Permissions

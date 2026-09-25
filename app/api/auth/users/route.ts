@@ -37,6 +37,9 @@ export async function POST(req: NextRequest) {
     if (db.users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
       return NextResponse.json({ error: 'Usuário já existe' }, { status: 409 });
     }
+    if (!['admin', 'editor', 'viewer', 'purchaser'].includes(role)) {
+      return NextResponse.json({ error: 'Perfil de acesso inválido' }, { status: 400 });
+    }
     const user: User = {
       id: generateId(),
       username: username.toLowerCase().trim(),
@@ -58,6 +61,9 @@ export async function POST(req: NextRequest) {
     if (idx === -1) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
 
     if (name) db.users[idx].name = name.trim();
+    if (role && !['admin', 'editor', 'viewer', 'purchaser'].includes(role)) {
+      return NextResponse.json({ error: 'Perfil de acesso inválido' }, { status: 400 });
+    }
     if (role) db.users[idx].role = role;
     if (typeof active === 'boolean') db.users[idx].active = active;
     if (password) db.users[idx].password_hash = hashPassword(password);

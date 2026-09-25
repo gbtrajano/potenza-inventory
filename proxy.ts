@@ -2,7 +2,12 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
-  function middleware(req) {
+  function proxy(req) {
+    const role = String(req.nextauth.token?.role || "");
+    const path = req.nextUrl.pathname;
+    if (role === "purchaser" && path !== "/" && !path.startsWith("/api/purchases")) {
+      return NextResponse.json({ error: "Acesso restrito à seção de compras" }, { status: 403 });
+    }
     return NextResponse.next();
   },
   {

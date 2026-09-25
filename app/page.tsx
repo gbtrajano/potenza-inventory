@@ -10,14 +10,15 @@ import ImportExport from "@/components/ImportExport";
 import DatabasePage from "@/components/DatabasePage";
 import HistoryPage from "@/components/HistoryPage";
 import UsersPage from "@/components/UsersPage";
+import PurchasesPage from "@/components/PurchasesPage";
 import {
   LayoutDashboard, Package, PlusCircle, ArrowRightLeft,
   UploadCloud, Database, History, Menu, X, Monitor,
-  ChevronRight, LogOut, Users, Shield, ChevronDown,
+  ChevronRight, LogOut, Users, Shield, ChevronDown, ShoppingCart,
 } from "lucide-react";
 import { InventoryItem } from "@/lib/db";
 
-type Page = "dashboard" | "inventory" | "add" | "transfer" | "import-export" | "database" | "history" | "users";
+type Page = "dashboard" | "inventory" | "add" | "transfer" | "import-export" | "database" | "history" | "users" | "purchases";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -34,6 +35,8 @@ export default function Home() {
   const role = (session?.user as any)?.role as string;
   const isAdmin = role === "admin";
   const canEdit = role === "admin" || role === "editor";
+  const isPurchaser = role === "purchaser";
+  const activePage: Page = isPurchaser ? "purchases" : page;
 
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
@@ -45,18 +48,21 @@ export default function Home() {
     </div>
   );
 
-  const navItems: { id: Page; label: string; icon: React.ReactNode; adminOnly?: boolean; editorOnly?: boolean }[] = [
+  const navItems: { id: Page; label: string; icon: React.ReactNode; adminOnly?: boolean; editorOnly?: boolean; purchaseAccess?: boolean }[] = [
     { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard size={16} /> },
     { id: "inventory", label: "Inventário", icon: <Package size={16} /> },
     { id: "add", label: "Adicionar Item", icon: <PlusCircle size={16} />, editorOnly: true },
     { id: "transfer", label: "Transferência", icon: <ArrowRightLeft size={16} />, editorOnly: true },
     { id: "import-export", label: "Import / Export", icon: <UploadCloud size={16} />, editorOnly: true },
     { id: "history", label: "Histórico", icon: <History size={16} /> },
+    { id: "purchases", label: "Compras e Periféricos", icon: <ShoppingCart size={16} />, purchaseAccess: true },
     { id: "database", label: "Banco de Dados", icon: <Database size={16} />, adminOnly: true },
     { id: "users", label: "Usuários", icon: <Users size={16} />, adminOnly: true },
   ];
 
   const visibleNav = navItems.filter(item => {
+    if (isPurchaser) return item.id === "purchases";
+    if (item.purchaseAccess && !["admin", "editor"].includes(role)) return false;
     if (item.adminOnly && !isAdmin) return false;
     if (item.editorOnly && !canEdit) return false;
     return true;
@@ -66,12 +72,14 @@ export default function Home() {
     dashboard: "Dashboard", inventory: "Inventário", add: editItem ? "Editar Item" : "Novo Item",
     transfer: "Transferência Rápida", "import-export": "Importar / Exportar",
     database: "Banco de Dados", history: "Histórico de Alterações", users: "Gerenciar Usuários",
+    purchases: "Compras e Periféricos",
   };
 
   const ROLE_DISPLAY: Record<string, { label: string; color: string }> = {
     admin: { label: "Admin", color: "#f59e0b" },
     editor: { label: "Editor", color: "#3b82f6" },
     viewer: { label: "Visualizador", color: "#6b7280" },
+    purchaser: { label: "Comprador", color: "#10b981" },
   };
   const roleInfo = ROLE_DISPLAY[role] || ROLE_DISPLAY.viewer;
 
@@ -114,7 +122,7 @@ export default function Home() {
           {visibleNav.map(item => (
             <button
               key={item.id}
-              className={`sidebar-link${page === item.id ? " active" : ""}`}
+              className={`sidebar-link${activePage === item.id ? " active" : ""}`}
               onClick={() => handleNav(item.id)}
             >
               {item.icon}
@@ -144,7 +152,7 @@ export default function Home() {
           <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--text2)" }}>
             <span>TI</span>
             <ChevronRight size={12} />
-            <span style={{ color: "var(--text)", fontWeight: 600 }}>{pageTitle[page]}</span>
+            <span style={{ color: "var(--text)", fontWeight: 600 }}>{pageTitle[activePage]}</span>
           </div>
 
           {/* User menu */}
@@ -216,13 +224,13 @@ export default function Home() {
 
         {/* Content */}
         <main style={{ flex: 1, overflow: "auto", padding: 24 }}>
-          {page === "dashboard" && (
+          {activePage === "dashboard" && (
             <Dashboard
               key={refreshKey}
               onNavigate={(p, filter) => handleNav(p, filter)}
             />
           )}
-          {page === "inventory" && (
+          {activePage === "inventory" && (
             <InventoryList
               key={`${refreshKey}-${inventoryQuickFilter ?? "all"}`}
               initialQuickFilter={inventoryQuickFilter}
@@ -232,16 +240,17 @@ export default function Home() {
               canEdit={canEdit}
             />
           )}
-          {page === "add" && canEdit && (
+          {activePage === "add" && canEdit && (
             <ItemForm item={editItem} onDone={handleFormDone} onCancel={() => { setEditItem(null); setPage("inventory"); }} />
           )}
-          {page === "transfer" && canEdit && (
+          {activePage === "transfer" && canEdit && (
             <TransferModal standalone onDone={refresh} />
           )}
-          {page === "import-export" && canEdit && <ImportExport onDone={refresh} />}
-          {page === "history" && <HistoryPage key={refreshKey} />}
-          {page === "database" && isAdmin && <DatabasePage key={refreshKey} onDone={refresh} />}
-          {page === "users" && isAdmin && <UsersPage key={refreshKey} />}
+          {activePage === "import-export" && canEdit && <ImportExport onDone={refresh} />}
+          {activePage === "history" && <HistoryPage key={refreshKey} />}
+          {activePage === "database" && isAdmin && <DatabasePage key={refreshKey} onDone={refresh} />}
+          {activePage === "users" && isAdmin && <UsersPage key={refreshKey} />}
+          {activePage === "purchases" && (isPurchaser || canEdit) && <PurchasesPage key={refreshKey} />}
         </main>
       </div>
 

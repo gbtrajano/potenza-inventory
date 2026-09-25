@@ -6,7 +6,7 @@ interface UserRecord {
   id: string;
   username: string;
   name: string;
-  role: "admin" | "editor" | "viewer";
+  role: "admin" | "editor" | "viewer" | "purchaser";
   active: boolean;
   created_at: string;
   last_login?: string;
@@ -16,6 +16,7 @@ const ROLE_INFO = {
   admin:  { label: "Administrador", color: "#f59e0b", desc: "Acesso total — gerencia usuários, banco de dados e inventário" },
   editor: { label: "Editor",        color: "#3b82f6", desc: "Pode adicionar, editar, transferir e importar itens" },
   viewer: { label: "Visualizador",  color: "#6b7280", desc: "Apenas visualização — sem permissão de edição" },
+  purchaser: { label: "Comprador", color: "#10b981", desc: "Consulta somente compras, saldos e histórico de trocas" },
 };
 
 type ModalMode = "create" | "edit" | "password" | null;
@@ -268,6 +269,7 @@ export default function UsersPage() {
                       <option value="admin">Administrador — acesso total</option>
                       <option value="editor">Editor — pode editar o inventário</option>
                       <option value="viewer">Visualizador — somente leitura</option>
+                      <option value="purchaser">Comprador — consulta somente compras e trocas</option>
                     </select>
                   </div>
                   {modal === "edit" && (
